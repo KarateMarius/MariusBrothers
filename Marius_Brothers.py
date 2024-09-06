@@ -210,14 +210,16 @@ def Play():
 
             if keys[py.K_ESCAPE]:
 
-                # wenn bei der namenseingabe nichts eingeben wird -> festlegen standart name
-                if not entry_get:
-                    spielername = "Player"
-                else:
-                    spielername = entry_get
+
 
                 # prüft ob der spieler "runter fällt" -> wenn nicht schreibt dann den highscore beim verlassen
                 if not self.rect.top > fenster_height:
+                    # wenn bei der namenseingabe nichts eingeben wird -> festlegen standart name
+                    if not entry_get:
+                        spielername = "Player"
+                    else:
+                        spielername = entry_get
+                        
                     file = open("assets/txts/highscore.txt", "a")
                     file.write(str(clicked_level) + " " + str(spielername) + " " + str(round(game.score)) + "\n")
                     file.close()
