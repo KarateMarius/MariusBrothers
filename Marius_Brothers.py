@@ -196,16 +196,16 @@ def Play():
             keys = py.key.get_pressed()
 
             # setzt die richtung (den vector) auf 1 also True
-            if keys[py.K_LEFT]:
+            if keys[py.K_LEFT] or keys[py.K_a]:
                 self.richtung.x = -1
                 self.blick_right = False
-            elif keys[py.K_RIGHT]:
+            elif keys[py.K_RIGHT] or keys[py.K_d]:
                 self.richtung.x = 1
                 self.blick_right = True
             else:
                 self.richtung.x = 0
 
-            if keys[py.K_SPACE] and self.touch_boden or keys[py.K_UP] and self.touch_boden:
+            if keys[py.K_SPACE] and self.touch_boden or keys[py.K_UP] and self.touch_boden or keys[py.K_w] and self.touch_boden:
                 self.jump()
 
             if keys[py.K_ESCAPE]:
