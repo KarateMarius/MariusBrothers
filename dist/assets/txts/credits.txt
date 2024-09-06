@@ -1,0 +1,64 @@
+Credits
+
+Design von Charakter:
+Alexander Schulze
+
+Design der Level und Farben sowie Anleitung:
+Leonie Pankrath
+
+Easter Egg Lied dnd.ogg:
+Oskar Scheiter
+
+Design von einigen Sprites wie Untergrundblöcke:
+SUPER MARIO MEGA TILESET made by BMATSANTOS
+(selbst nachbearbeitet)
+
+Code:													irgendwo aus den tiefen des World Wide Web zusammen geschustert
+														csv-Datei Laden und animationen teils von clear code da externes module (cvs reader) und ich keine ahnung
+														auch coding with russ war eine sehr gute inspiration 
+
+Restliches Design mit einiger Inspiration von mir ;)
+
+Level in einem Editor names "Tiled" erstellt
+	dieser arbeitet unteranderem mit csv datein (comma seperated value)
+
+Externe Python Module von https://pypi.org 
+	(benötigte erweiterungen in der requierments.txt zu finden)
+
+Code mit Python 3.9.7 geschrieben
+	editiert mit PyCharm Proffesional
+	
+Audio mit Audacity bearbeitet
+
+Bilder mit paint.net bearbeitet
+
+Musik:
+
+jump.ogg:												https://www.youtube.com/watch?v=_eqKyzxa0dM&ab_channel=AllSounds (ca. Zeit: 0:22)
+
+coin.ogg:												https://www.youtube.com/watch?v=2ObiwMnRAII&list=PLjcN1EyupaQnHM1I9SmiXfbT6aG4ezUvu&index=11&ab_channel=CodingWithRuss -> https://freesound.org/
+
+happy.ogg: 												https://opengameart.org/content/happy-arcade-tune
+
+xeon6.ogg: 												https://opengameart.org/content/xeon-theme-remastered
+
+	Intro.ogg
+	
+	Worldmap Theme.ogg
+	
+	Grasslands Theme.ogg:
+														https://opengameart.org/content/platformer-game-music-pack
+	
+384. Steppin Up.ogg:									https://opengameart.org/content/steppin-up
+
+ChillWinterLoopable.ogg:    							https://opengameart.org/content/snowy-winters-night
+
+Jungle.ogg:												https://opengameart.org/content/jungle
+
+the-lion-sleeps-tonight-wimoweh-audio.ogg: 				https://www.youtube.com/watch?v=OQlByoPdG6c&ab_channel=thetknsVEVO
+
+the-number-of-the-beast-1998-remaster.ogg: 				https://www.youtube.com/watch?v=fyr79sB6nGg&ab_channel=IronMaiden-Topic
+
+welcome-to-the-jungle-studio-version-high-quality.ogg:  https://www.youtube.com/watch?v=9erLsEHAZRI&ab_channel=PeppeSpampy
+
+super-mario-theme-epic-version.ogg:						https://www.youtube.com/watch?v=6pjbaE98ftU&ab_channel=L%27OrchestraCinématique

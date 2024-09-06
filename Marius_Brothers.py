@@ -10,6 +10,7 @@ from tkVideoPlayer import TkinterVideo
 from csv import reader
 from os import walk
 
+
 # extra tk fenster für die highscore präsentation
 def highscore_window():
     # laden und lesen der highscore.txt datei
@@ -106,7 +107,7 @@ def credits_window():
 # schließen des hauptmenu
 def closing():
     pygame.time.delay(250)
-    fenster.config(quit())
+    fenster.quit()
 
 
 # starten des pygame fenster
@@ -812,7 +813,8 @@ def Play():
                                fenster_height / 2)
                 self.draw_text("Drücke ESC zum verlassen!", 48, "white", fenster_width / 2, fenster_height * 3 / 4)
 
-                self.draw_text("Leertaste zum neustarten drücken!", 48, "white", fenster_width / 2, fenster_height * 3.5 / 4)
+                self.draw_text("Leertaste zum neustarten drücken!", 48, "white", fenster_width / 2,
+                               fenster_height * 3.5 / 4)
 
                 if keys[py.K_SPACE]:
                     py.quit()
