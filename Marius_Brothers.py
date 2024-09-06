@@ -205,12 +205,11 @@ def Play():
             else:
                 self.richtung.x = 0
 
-            if keys[py.K_SPACE] and self.touch_boden or keys[py.K_UP] and self.touch_boden or keys[py.K_w] and self.touch_boden:
+            if keys[py.K_SPACE] and self.touch_boden or keys[py.K_UP] and self.touch_boden or keys[
+                py.K_w] and self.touch_boden:
                 self.jump()
 
             if keys[py.K_ESCAPE]:
-
-
 
                 # prüft ob der spieler "runter fällt" -> wenn nicht schreibt dann den highscore beim verlassen
                 if not self.rect.top > fenster_height:
@@ -219,7 +218,7 @@ def Play():
                         spielername = "Player"
                     else:
                         spielername = entry_get
-                        
+
                     file = open("assets/txts/highscore.txt", "a")
                     file.write(str(clicked_level) + " " + str(spielername) + " " + str(round(game.score)) + "\n")
                     file.close()
