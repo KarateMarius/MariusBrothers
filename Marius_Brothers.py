@@ -375,12 +375,11 @@ def Play():
     class Wolken:
         def __init__(self, horizont_height, level_width, wolken_number):
 
-            if clicked_level == "World 1 - 2" or clicked_level == "World 1 - 2":
+            if clicked_level == "World 1 - 2" and not "Leo" == entry_get or clicked_level == "World 1 - 2" and not "Leo" == entry_get:
                 wolken_surf_liste = import_ordner("assets/blocks/wolken")
             elif clicked_level == "World 1 - 3" or clicked_level == "World 1 - 4":
                 wolken_surf_liste = import_ordner("assets/blocks/schnee")
-            elif (entry_get == "Leo" and clicked_level == "World 1 - 1" or clicked_level == "World 1 - 2") or (
-                    entry_get == "whosleo" and clicked_level == "World 1 - 1" or clicked_level == "World 1 - 2"):
+            elif entry_get == "Leo" and clicked_level == "World 1 - 2":
                 wolken_surf_liste = import_ordner("assets/blocks/hexe")
             else:
                 wolken_surf_liste = import_ordner("assets/blocks/wolken")
@@ -525,8 +524,8 @@ def Play():
                 self.ranken_ebene = self.level_sprite_group(ranken_layout, "ranken")
 
             # nächstes easter egg -> insider -> alle wolken werden durch eine hexe ersetzt
-            if entry_get == "whosleo" or entry_get == "Leo" and not clicked_level == "World 1 - 3" and not clicked_level == "World 1 - 4":
-                self.wolken = Wolken(100, level_width, 1)
+            if entry_get == "Leo" and not clicked_level == "World 1 - 3" and not clicked_level == "World 1 - 4":
+                self.wolken = Wolken(100, level_width, 100)
 
             # hier werden die wolken mit schneeflocken ersetzt für das winter level
             elif clicked_level == "World 1 - 3" or clicked_level == "World 1 - 4":
