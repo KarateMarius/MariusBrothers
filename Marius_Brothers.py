@@ -778,8 +778,9 @@ def Play():
             if py.sprite.spritecollide(self.spieler.sprite, self.ziel, False):
                 pygame.mixer.fadeout(500)  # musik wird leiser
                 self.time_stop = 1  # zeit zählen wird gestoppt
+                keys = py.key.get_pressed()
 
-                # bewegungs unfähigkeit des spielers sonst heraus laufen springen... aus dem ziehl
+                # bewegungsunfähigkeit des spielers sonst heraus laufen springen... aus dem ziel
                 spieler.richtung.x = 0  # wenn die vektoren 0 sind kann er sich nicht mehr bewegen da die vektoren multipliziert werden
                 spieler.richtung.y = 0  # "--"
                 spieler.jump_geschw = 0  # "--"
@@ -792,6 +793,9 @@ def Play():
                                fenster_height / 2)
                 self.draw_text("Drücke ESC zum speichern und verlassen!", 48, "white", fenster_width / 2,
                                fenster_height * 3 / 4)
+
+                if keys[py.K_ESCAPE]:
+                    py.quit()
 
             # spieler fällt aus der map herunter
             if spieler.rect.top > fenster_height:  # es wird die höhe genommen da in der oberen linken ecke gestartet wird mit dem fenster aufbau
@@ -819,6 +823,8 @@ def Play():
                 if keys[py.K_SPACE]:
                     py.quit()
                     Play()
+
+
 
         # prüft die kollision mit einer wand auf horiziontaler ebene
         def x_richtung_collision(self):
