@@ -9,6 +9,8 @@ from tkinter import *
 from tkVideoPlayer import TkinterVideo
 from csv import reader
 from os import walk
+from itertools import cycle
+from PIL import ImageTk
 
 
 # extra tk fenster für die highscore präsentation
@@ -102,6 +104,42 @@ def credits_window():
     background_music = py.mixer.Sound("assets/musik/super-mario-theme-epic-version.ogg")
     background_music.set_volume(0.5)
     background_music.play(loops=-1)
+
+
+def edit_profil():
+    def closing_edit_profil():
+        py.mixer.fadeout(500)
+        pygame.time.delay(500)
+        background_music.stop()
+        profil_fenster.destroy()
+
+    py.mixer.init()
+
+    background_music = py.mixer.Sound("assets/musik/LFN.mp3")
+    background_music.set_volume(0.5)
+    background_music.play(loops=-1)
+
+    images = ["cwr1.png", "cwr2.png"]
+    photos = cycle(ImageTk.PhotoImage(file=image) for image in images)
+
+    def slideShow():
+        img = next(photos)
+        displayCanvas.config(image=img)
+        profil_fenster.after(100, slideShow)  # 0.1 seconds
+
+        backbutton = Button(profil_canvas, text="Fenster schließen", bg="#cc1247", fg="#ffffff",
+                            command=closing_edit_profil)
+        backbutton["font"] = Buttonfontend
+        backbutton.place(x=135, y=500)
+
+    profil_fenster = tk.Toplevel()  # Marius, wenn du Idiot mal zwei TK-Fenster gleichzeitig hast, musst du Toplevel statt Tk() nehmen
+    profil_canvas = tk.Canvas(profil_fenster, width=20, height=60)
+    profil_fenster.geometry("300x600")
+
+    displayCanvas = tk.Label(profil_fenster)
+    displayCanvas.pack()
+    profil_fenster.after(10, lambda: slideShow())
+
 
 
 # schließen des hauptmenu
@@ -211,9 +249,8 @@ def Play():
 
             if keys[py.K_ESCAPE]:
 
-                # prüft ob der spieler "runter fällt" -> wenn nicht schreibt dann den highscore beim verlassen
+                # prüft ob der spieler "runterfällt"
                 if not self.rect.top > fenster_height:
-                    # wenn bei der namenseingabe nichts eingeben wird -> festlegen standart name
                     if not entry_get:
                         spielername = "Player"
                     else:
@@ -223,7 +260,6 @@ def Play():
                     file.write(str(clicked_level) + " " + str(spielername) + " " + str(round(game.score)) + "\n")
                     file.close()
                     py.quit()
-                # wenn doch schreibt er nicht den highscore
                 else:
                     py.quit()
 
@@ -253,7 +289,7 @@ def Play():
             else:
                 self.jump_sound.play()
 
-        # update methode zum immer ausführen gebrauchter funktionen um nich immer die ganze spieler klasse zu updaten
+        # update methode zum immer ausführen gebrauchter funktionen
         def update(self):
             self.get_input()
             self.spieler_animation_status()
@@ -824,8 +860,6 @@ def Play():
                     py.quit()
                     Play()
 
-
-
         # prüft die kollision mit einer wand auf horiziontaler ebene
         def x_richtung_collision(self):
 
@@ -1220,6 +1254,10 @@ eingabe_feld.place(x=360, y=180, width=250, height=40)
 startbutton = tk.Button(fenster, text="Start", bg="#FFAA33", fg="#ffffff", command=Play)
 startbutton["font"] = Buttonfontstart
 startbutton.place(x=400, y=350)
+
+profil = tk.Button(fenster, text="Pofile", bg="#FF6588", fg="#ffffff", command=edit_profil)
+profil["font"] = Buttonfontend
+profil.place(x=200, y=350)
 
 # führt zu einem highscore fenster was die letzen abgeschlossenen level mit spielername und highscore zeigt
 highscorebutton = Button(fenster, text="Highscore", bg="#b9d613", fg="#ffffff", command=highscore_window)
