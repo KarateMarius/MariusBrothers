@@ -113,6 +113,20 @@ def edit_profil():
         background_music.stop()
         profil_fenster.destroy()
 
+
+
+    def slideShow():
+        img = next(photos)
+        displayCanvas.config(image=img)
+        profil_fenster.after(100, slideShow)  # 0.1 seconds
+
+
+
+    profil_fenster = tk.Toplevel()  # Marius, wenn du Idiot mal zwei TK-Fenster gleichzeitig hast, musst du Toplevel statt Tk() nehmen
+    profil_canvas = tk.Canvas(profil_fenster, width=200, height=600)
+    profil_canvas.pack()
+    profil_fenster.geometry("300x600")
+
     py.mixer.init()
 
     background_music = py.mixer.Sound("assets/musik/LFN.mp3")
@@ -122,24 +136,39 @@ def edit_profil():
     images = ["cwr1.png", "cwr2.png"]
     photos = cycle(ImageTk.PhotoImage(file=image) for image in images)
 
-    def slideShow():
-        img = next(photos)
-        displayCanvas.config(image=img)
-        profil_fenster.after(100, slideShow)  # 0.1 seconds
+    backbutton = Button(profil_canvas, text="Fenster schließen", bg="#cc1247", fg="#ffffff",
+                        command=closing_edit_profil)
+    backbutton["font"] = Buttonfontend
+    backbutton.place(x=135, y=500)
 
-        backbutton = Button(profil_canvas, text="Fenster schließen", bg="#cc1247", fg="#ffffff",
-                            command=closing_edit_profil)
-        backbutton["font"] = Buttonfontend
-        backbutton.place(x=135, y=500)
-
-    profil_fenster = tk.Toplevel()  # Marius, wenn du Idiot mal zwei TK-Fenster gleichzeitig hast, musst du Toplevel statt Tk() nehmen
-    profil_canvas = tk.Canvas(profil_fenster, width=20, height=60)
-    profil_fenster.geometry("300x600")
-
-    displayCanvas = tk.Label(profil_fenster)
-    displayCanvas.pack()
+    displayCanvas = tk.Label(profil_canvas)
+    displayCanvas.place(x=0, y=0)
     profil_fenster.after(10, lambda: slideShow())
 
+def einstellungen_fenster():
+    def closing_highscore():
+        py.mixer.fadeout(500)
+        pygame.time.delay(500)
+        background_music.stop()
+        control.destroy()
+
+    control = Tk()
+    hicanvas = tk.Canvas(control, height=300, width=500)
+    control.geometry("500x300")
+    hicanvas.pack()
+
+    backbutton = Button(hicanvas, text="Speichern", bg="#88cc55", fg="#ffffff", command=closing_highscore)
+    backbutton["font"] = Buttonfontend_windows_11
+    backbutton.place(x=400, y=250)
+
+    scale = Scale(hicanvas, orient=HORIZONTAL, length=300, width=20, sliderlength=10, from_=0, to=100, tickinterval=10)
+    scale.place(x=165, y=5)
+
+    py.mixer.init()
+
+    background_music = py.mixer.Sound("assets/musik/super-mario-theme-epic-version.ogg")
+    background_music.set_volume(0.5)
+    background_music.play(loops=-1)
 
 
 # schließen des hauptmenu
@@ -1269,6 +1298,10 @@ highscorebutton.place(x=850, y=20)
 creditsbutton = Button(fenster, text="Credits", bg="#395E66", fg="#ffffff", command=credits_window)
 creditsbutton["font"] = Buttonfontend
 creditsbutton.place(x=450, y=475)
+
+einstellungen = Button(fenster, text="Einstellung", bg="#395E66", fg="#ffffff", command=einstellungen_fenster)
+einstellungen["font"] = Buttonfontend
+einstellungen.place(x=250, y=275)
 
 # dropdown menu für die level bestimung
 clicked = StringVar()
