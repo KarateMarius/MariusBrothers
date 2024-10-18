@@ -163,11 +163,12 @@ def einstellungen_fenster():
 
     scale = Scale(hicanvas, orient=HORIZONTAL, length=300, width=20, sliderlength=10, from_=0, to=100, tickinterval=10)
     scale.place(x=165, y=5)
+    volume_value = scale.get()
 
     py.mixer.init()
 
     background_music = py.mixer.Sound("assets/musik/super-mario-theme-epic-version.ogg")
-    background_music.set_volume(0.5)
+    background_music.set_volume(volume_value)
     background_music.play(loops=-1)
 
 
@@ -442,7 +443,7 @@ def Play():
 
             if clicked_level == "World 1 - 2" and not "Leo" == entry_get or clicked_level == "World 1 - 2" and not "Leo" == entry_get:
                 wolken_surf_liste = import_ordner("assets/blocks/wolken")
-            elif clicked_level == "World 1 - 3" or clicked_level == "World 1 - 4":
+            elif clicked_level == "World 1 - 3" or clicked_level == "World 1 - 4" or clicked_level == "World 1 - 8":
                 wolken_surf_liste = import_ordner("assets/blocks/schnee")
             elif entry_get == "Leo" and clicked_level == "World 1 - 2":
                 wolken_surf_liste = import_ordner("assets/blocks/hexe")
@@ -504,6 +505,12 @@ def Play():
             elif clicked_level == "World 1 - 6":
                 self.level_bg_music = py.mixer.Sound("assets/musik/the-lion-sleeps-tonight-wimoweh-audio.ogg")
                 self.level_bg_music.set_volume(0.1)
+            elif clicked_level == "World 1 - 7":
+                self.level_bg_music = py.mixer.Sound("assets/musik/bhh.mp3")
+                self.level_bg_music.set_volume(0.2)
+            elif clicked_level == "World 1 - 8":
+                self.level_bg_music = py.mixer.Sound("assets/musik/sah.mp3")
+                self.level_bg_music.set_volume(0.2)
             # wenn als spielername die "666" eingegeben wird
             # spielt in jedem level von iron maiden "the number of the beast" (666)
             if entry_get == "666":
@@ -560,7 +567,7 @@ def Play():
             self.decoration_ebene = self.level_sprite_group(decoration_layout, "dekorationen")
 
             # für manche level sind nur bestimmte texturen gebraucht diese werden aus und eingeschalten
-            if not clicked_level == "World 1 - 5" and not clicked_level == "World 1 - 6":
+            if not clicked_level == "World 1 - 5" and not clicked_level == "World 1 - 6" and not clicked_level == "World 1 - 7":
                 blumen_layout = import_csv_datei(level_data["blumen"])
                 self.blumen_ebene = self.level_sprite_group(blumen_layout, "blumen")
 
@@ -570,14 +577,14 @@ def Play():
             baum_layout = import_csv_datei(level_data["baum"])
             self.baum_ebene = self.level_sprite_group(baum_layout, "baum")
 
-            if not clicked_level == "World 1 - 3" and not clicked_level == "World 1 - 4":
+            if not clicked_level == "World 1 - 3" and not clicked_level == "World 1 - 4" and not clicked_level == "World 1 - 8":
                 busch_layout = import_csv_datei(level_data["busch"])
-                self.busche_ebene = self.level_sprite_group(busch_layout, "busch")
+                self.busch_ebene = self.level_sprite_group(busch_layout, "busch")
                 if not clicked_level == "World 1 - 5" and not clicked_level == "World 1 - 6":
                     pilze_layout = import_csv_datei(level_data["pilze"])
                     self.pilze_ebene = self.level_sprite_group(pilze_layout, "pilze")
 
-            if clicked_level == "World 1 - 3" or clicked_level == "World 1 - 4":
+            if clicked_level == "World 1 - 3" or clicked_level == "World 1 - 4" or clicked_level == "World 1 - 8":
                 geschenk_layout = import_csv_datei(level_data["geschenk"])
                 self.geschenk_ebene = self.level_sprite_group(geschenk_layout, "geschenk")
 
@@ -589,11 +596,11 @@ def Play():
                 self.ranken_ebene = self.level_sprite_group(ranken_layout, "ranken")
 
             # nächstes easter egg -> insider -> alle wolken werden durch eine hexe ersetzt
-            if entry_get == "Leo" and not clicked_level == "World 1 - 3" and not clicked_level == "World 1 - 4":
+            if entry_get == "Leo":
                 self.wolken = Wolken(100, level_width, 100)
 
             # hier werden die wolken mit schneeflocken ersetzt für das winter level
-            elif clicked_level == "World 1 - 3" or clicked_level == "World 1 - 4":
+            elif clicked_level == "World 1 - 3" or clicked_level == "World 1 - 4" or clicked_level == "World 1 - 8":
                 self.wolken = Wolken(750, level_width, 100)
 
             # wenn kein extra der fall ist einfache wolken spawnen
@@ -673,13 +680,13 @@ def Play():
                         # für level unterschiede bestimmtes laden der blöcke
                         # typ wird durch ein dictonary festgelegt das mit einer csv-datei verbunden ist
                         if typ == "untergrund":
-                            if clicked_level == "World 1 - 1" or clicked_level == "World 1 - 2":
+                            if clicked_level == "World 1 - 1" or clicked_level == "World 1 - 2" or clicked_level == "World 1 - 7":
                                 untergrund_block_liste = grafiken_teilen("assets/blocks/blöcke2.png")
                                 block_ebene = untergrund_block_liste[int(nummer)]
                                 sprite = Statischer_Block(block_size, x, y, block_ebene)
                                 sprite_group.add(sprite)
 
-                            if clicked_level == "World 1 - 3" or clicked_level == "World 1 - 4":
+                            if clicked_level == "World 1 - 3" or clicked_level == "World 1 - 4" or clicked_level == "World 1 - 8":
                                 untergrund_block_liste = grafiken_teilen("assets/blocks/blöcke3.png")
                                 block_ebene = untergrund_block_liste[int(nummer)]
                                 sprite = Statischer_Block(block_size, x, y, block_ebene)
@@ -704,11 +711,11 @@ def Play():
                             sprite_group.add(sprite)
 
                         if typ == "blumen":
-                            if clicked_level == "World 1 - 1" or clicked_level == "World 1 - 2":
+                            if clicked_level == "World 1 - 1" or clicked_level == "World 1 - 2" or clicked_level == "World 1 - 7":
                                 sprite = Animierter_Block(block_size, x, y, "assets/blocks/blumen")
                                 sprite_group.add(sprite)
 
-                            if clicked_level == "World 1 - 3" or clicked_level == "World 1 - 4":
+                            if clicked_level == "World 1 - 3" or clicked_level == "World 1 - 4" or clicked_level == "World 1 - 8":
                                 sprite = Animierter_Block(block_size, x, y, "assets/blocks/pusteblume")
                                 sprite_group.add(sprite)
 
@@ -717,13 +724,13 @@ def Play():
                             sprite_group.add(sprite)
 
                         if typ == "baum":
-                            if clicked_level == "World 1 - 1" or clicked_level == "World 1 - 2":
+                            if clicked_level == "World 1 - 1" or clicked_level == "World 1 - 2" or clicked_level == "World 1 - 7":
                                 baum_block_liste = grafiken_teilen("assets/blocks/tree.png")
                                 block_ebene = baum_block_liste[int(nummer)]
                                 sprite = Statischer_Block(block_size, x, y, block_ebene)
                                 sprite_group.add(sprite)
 
-                            if clicked_level == "World 1 - 3" or clicked_level == "World 1 - 4":
+                            if clicked_level == "World 1 - 3" or clicked_level == "World 1 - 4" or clicked_level == "World 1 - 8":
                                 baum_block_liste = grafiken_teilen("assets/blocks/winter_bäume.png")
                                 block_ebene = baum_block_liste[int(nummer)]
                                 sprite = Statischer_Block(block_size, x, y, block_ebene)
@@ -736,7 +743,7 @@ def Play():
                                 sprite_group.add(sprite)
 
                         if typ == "busch":
-                            if clicked_level == "World 1 - 1" or clicked_level == "World 1 - 2":
+                            if clicked_level == "World 1 - 1" or clicked_level == "World 1 - 2" or clicked_level == "World 1 - 7":
                                 busch_block_liste = grafiken_teilen("assets/blocks/bush.png")
                                 block_ebene = busch_block_liste[int(nummer)]
                                 sprite = Statischer_Block(block_size, x, y, block_ebene)
@@ -749,7 +756,7 @@ def Play():
                                 sprite_group.add(sprite)
 
                         if typ == "pilze":
-                            if clicked_level == "World 1 - 1" or clicked_level == "World 1 - 2":
+                            if clicked_level == "World 1 - 1" or clicked_level == "World 1 - 2" or clicked_level == "World 1 - 7":
                                 pilze_block_liste = grafiken_teilen("assets/blocks/shroom.png")
                                 block_ebene = pilze_block_liste[int(nummer)]
                                 sprite = Statischer_Block(block_size, x, y, block_ebene)
@@ -966,15 +973,15 @@ def Play():
             self.decoration_ebene.draw(self.draw_ebene)
 
             # je nach level wieder einige spezial blöcke
-            if not clicked_level == "World 1 - 3" and not clicked_level == "World 1 - 4":
-                self.busche_ebene.update(self.level_verschiebung)
-                self.busche_ebene.draw(self.draw_ebene)
+            if not clicked_level == "World 1 - 3" and not clicked_level == "World 1 - 4" and not clicked_level == "World 1 - 8":
+                self.busch_ebene.update(self.level_verschiebung)
+                self.busch_ebene.draw(self.draw_ebene)
 
                 if not clicked_level == "World 1 - 5" and not clicked_level == "World 1 - 6":
                     self.pilze_ebene.update(self.level_verschiebung)
                     self.pilze_ebene.draw(self.draw_ebene)
 
-            if clicked_level == "World 1 - 3" or clicked_level == "World 1 - 4":
+            if clicked_level == "World 1 - 3" or clicked_level == "World 1 - 4" or clicked_level == "World 1 - 8":
                 self.geschenk_ebene.update(self.level_verschiebung)
                 self.geschenk_ebene.draw(self.draw_ebene)
 
@@ -988,7 +995,7 @@ def Play():
             self.bereich_ebene.update(self.level_verschiebung)
             self.bereich_ebene.draw(self.draw_ebene)
 
-            if not clicked_level == "World 1 - 5" and not clicked_level == "World 1 - 6":
+            if not clicked_level == "World 1 - 5" and not clicked_level == "World 1 - 6" and not clicked_level == "World 1 - 7":
                 self.blumen_ebene.update(self.level_verschiebung)
                 self.blumen_ebene.draw(self.draw_ebene)
 
@@ -1004,6 +1011,9 @@ def Play():
             # spieler relevantes
             self.spieler.update()
             self.spieler.draw(self.draw_ebene)
+            self.x_richtung_collision()
+            self.y_richtung_collsion()
+            self.bewegung_x()
             self.check_coin_collisions()
             self.ui.show_spielername()
             self.ui.show_coins(self.coins)
@@ -1011,9 +1021,7 @@ def Play():
             self.ui.timer(self.time_left_string)
             self.calculating_highscore()
             self.check_game_state()
-            self.x_richtung_collision()
-            self.y_richtung_collsion()
-            self.bewegung_x()
+
 
     # interface im level
     class GUI:
@@ -1136,6 +1144,8 @@ def Play():
     # bestimmen des levels durch das ausgewählte feld im hauptmenu
     # danach auswählen der gebrauchten csv-datein
 
+    ###volume_value =
+
     # level 1
     if clicked_level == "World 1 - 1":
         level_map = {"untergrund": "assets/level_data/Level_1/level_1_overworld_erde.csv",
@@ -1211,7 +1221,27 @@ def Play():
                      "busch_2": "assets/level_data/Level_6/level_6_jungle_busch_2.csv",
                      "ranken": "assets/level_data/Level_6/level_6_jungle_ranken.csv"
                      }
-
+    # level 7
+    elif clicked_level == "World 1 - 7":
+        level_map = {"untergrund": "assets/level_data/Level_7/level_7_erde_erde.csv",
+                     "baum": "assets/level_data/Level_7/level_7_erde_baum.csv",
+                     "coins": "assets/level_data/Level_7/level_7_erde_coins.csv",
+                     "spieler": "assets/level_data/Level_7/level_7_erde_spieler.csv",
+                     "dekorationen": "assets/level_data/Level_7/level_7_erde_zaun.csv",
+                     "ziel": "assets/level_data/Level_7/level_7_erde_ziel.csv",
+                     "busch": "assets/level_data/Level_7/level_7_erde_busch.csv",
+                     "pilze": "assets/level_data/Level_7/level_7_erde_pilze.csv",
+                     }
+    elif clicked_level == "World 1 - 8":
+        level_map = {"untergrund": "assets/level_data/Level_8/level_8_schnee_schnee.csv",
+                     "baum": "assets/level_data/Level_8/level_8_schnee_bäume.csv",
+                     "coins": "assets/level_data/Level_8/level_8_schnee_coins.csv",
+                     "spieler": "assets/level_data/Level_8/level_8_schnee_spieler.csv",
+                     "dekorationen": "assets/level_data/Level_8/level_8_schnee_zaun.csv",
+                     "ziel": "assets/level_data/Level_8/level_8_schnee_ziel.csv",
+                     "blumen": "assets/level_data/Level_8/level_8_schnee_blumen.csv",
+                     "geschenk": "assets/level_data/Level_8/level_8_schnee_geschenk.csv"
+                     }
     # pygame initialisieren
     py.init()
 
@@ -1268,7 +1298,9 @@ options = [
     "World 1 - 3",
     "World 1 - 4",
     "World 1 - 5",
-    "World 1 - 6"
+    "World 1 - 6",
+    "World 1 - 7",
+    "World 1 - 8"
 ]
 # tkinterfesnter schließen
 endbutton = tk.Button(fenster, text="Fenster schließen", bg="#cc1247", fg="#ffffff", command=closing)
@@ -1288,6 +1320,9 @@ profil = tk.Button(fenster, text="Pofile", bg="#FF6588", fg="#ffffff", command=e
 profil["font"] = Buttonfontend
 profil.place(x=200, y=350)
 
+#hoffe das akutalisiert die scheiß lautstärke
+
+
 # führt zu einem highscore fenster was die letzen abgeschlossenen level mit spielername und highscore zeigt
 highscorebutton = Button(fenster, text="Highscore", bg="#b9d613", fg="#ffffff", command=highscore_window)
 highscorebutton["font"] = Buttonfontend
@@ -1303,7 +1338,7 @@ einstellungen = Button(fenster, text="Einstellung", bg="#395E66", fg="#ffffff", 
 einstellungen["font"] = Buttonfontend
 einstellungen.place(x=250, y=275)
 
-# dropdown menu für die level bestimung
+# dropdown menu für die level bestimmung
 clicked = StringVar()
 dropmenu = OptionMenu(fenster, clicked, *options)
 dropmenu.config(bg="#79ADDC", fg="#ffffff", font=Buttonfontlevel)
