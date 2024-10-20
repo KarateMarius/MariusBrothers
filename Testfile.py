@@ -185,7 +185,7 @@ def Play():
         def __init__(self, position):
             super().__init__()  # brauch man um die sprites (bilder) darzustellen
 
-            # liste der animations zustände
+            # liste der animations-zustände
             self.animations_liste = {"stand": [], "walk": [], "jump": [], "falling": []}
             self.import_charakter_ordner()
             # (ersetzt array) angabe des animierten spieler ordners (move stand jump fall)
@@ -197,11 +197,12 @@ def Play():
 
             # spieler variablen
             # in x richtung (.x)nur ändern um 1 für links rechts richtung
-            # wie das array nur eifacher da zustand über "True" 1 und False 0
+            # wie das array nur einfacher da zustand über "True" 1 und False 0
             self.richtung = py.math.Vector2(0, 0)
             self.geschw = 8
             self.gravity = 0.8
             self.jump_geschw = -16
+            self.collision_rect = py.Rect(self.rect.topleft, (40, self.rect.height))
 
             # spieler animationsstatus
             self.status = "stand"
@@ -241,23 +242,13 @@ def Play():
             image = animation[int(self.frame_nummer)]
             if self.blick_right:
                 self.image = image
+                self.rect.bottomleft = self.collision_rect.bottomleft
             else:
                 flipped_image = py.transform.flip(image, True, False)
                 self.image = flipped_image
+                self.rect.bottomright = self.collision_rect.bottomright
 
-            # rectangle (hitbox) für spieler
-            if self.touch_boden and self.touch_right:
-                self.rect = self.image.get_rect(bottomright=self.rect.bottomright)
-            elif self.touch_boden and self.touch_left:
-                self.rect = self.image.get_rect(bottomleft=self.rect.bottomleft)
-            elif self.touch_boden:
-                self.rect = self.image.get_rect(midbottom=self.rect.midbottom)
-            elif self.touch_decke and self.touch_right:
-                self.rect = self.image.get_rect(topright=self.rect.topright)
-            elif self.touch_decke and self.touch_left:
-                self.rect = self.image.get_rect(topleft=self.rect.topleft)
-            elif self.touch_decke:
-                self.rect = self.image.get_rect(midtop=self.rect.midtop)
+            self.rect = self.image.get_rect(midbottom = self.rect.midbottom)
 
         # schaut ob der benutzer eine der gesuchten tasten drückt?
         def get_input(self):
@@ -305,10 +296,10 @@ def Play():
                 else:
                     self.status = "stand"
 
-        # nach unten fallen immer aktiv (wird durch collision außer kraft gesetzt)
+        # nach unten fallen immer aktiv (wird durch collision außer Kraft gesetzt)
         def gravity_movement(self):
             self.richtung.y += self.gravity
-            self.rect.y += self.richtung.y
+            self.collision_rect.y += self.richtung.y
 
         # sprung
         def jump(self):
@@ -325,7 +316,7 @@ def Play():
             self.spieler_animation_status()
             self.animiere()
 
-    # block klasse für die einzelnen welten
+    # blockklasse für die einzelnen welten
     # festlegen der hitbox
     # updaten der poistion
     class Block(py.sprite.Sprite):
@@ -900,28 +891,22 @@ def Play():
         def x_richtung_collision(self):
 
             spieler = self.spieler.sprite
-            spieler.rect.x += spieler.richtung.x * spieler.geschw
+            spieler.collision_rect.x += spieler.richtung.x * spieler.geschw
 
             for sprite in self.untergrund_ebene.sprites():
-                if sprite.rect.colliderect(spieler.rect):
+                if sprite.rect.colliderect(spieler.collision_rect):
 
                     # linke seite
                     if spieler.richtung.x < 0:
-                        spieler.rect.left = sprite.rect.right
+                        spieler.collision_rect.left = sprite.rect.right
                         spieler.touch_left = True
                         self.position_x = spieler.rect.left  # gibt an wo die colliosion geschieht
 
                     # rechte seite
                     elif spieler.richtung.x > 0:
-                        spieler.rect.right = sprite.rect.left
+                        spieler.collision_rect.right = sprite.rect.left
                         spieler.touch_right = True
                         self.position_x = spieler.rect.right  # guckt ob der spieler sich weiter drinne als der rand von dem block befindet
-
-            # zurück setzen der touch links rechts variablen
-            if spieler.touch_left and (spieler.rect.left < self.position_x or spieler.richtung.x >= 0):
-                spieler.touch_left = False
-            if spieler.touch_right and (spieler.rect.right < self.position_x or spieler.richtung.x <= 0):
-                spieler.touch_right = False
 
         # prüft die kollision mit einer wand auf vertikaler ebene
         def y_richtung_collsion(self):
@@ -933,25 +918,21 @@ def Play():
             # spieler kollidiert mit einem block
             for sprite in self.untergrund_ebene.sprites():
 
-                # prüft wo es passiert oben oder unterhalb
-                if sprite.rect.colliderect(spieler.rect):
+                # prüft, wo es passiert oben oder unterhalb
+                if sprite.rect.colliderect(spieler.collision_rect):
                     if spieler.richtung.y > 0:
-                        spieler.rect.bottom = sprite.rect.top
+                        spieler.collision_rect.bottom = sprite.rect.top
                         spieler.richtung.y = 0
                         spieler.touch_boden = True  # -> wird nicht durch den Block gezogen
 
                     elif spieler.richtung.y < 0:
-                        spieler.rect.top = sprite.rect.bottom
+                        spieler.collision_rect.top = sprite.rect.bottom
                         spieler.richtung.y = 0
                         spieler.touch_decke = True  # -> sprung wird nicht weiter ausgeführt
 
             # deaktivieren das durch den boden falles
             if spieler.touch_boden and spieler.richtung.y < 0 or spieler.richtung.y > 1:
                 spieler.touch_boden = False
-
-            # deaktivieren das durch die denke springens
-            if spieler.touch_decke and spieler.richtung.y > 0:
-                spieler.touch_decke = False
 
         # errechnen eines einfachen highscores
         def calculating_highscore(self):
@@ -1011,9 +992,6 @@ def Play():
             # spieler relevantes
             self.spieler.update()
             self.spieler.draw(self.draw_ebene)
-            self.x_richtung_collision()
-            self.y_richtung_collsion()
-            self.bewegung_x()
             self.check_coin_collisions()
             self.ui.show_spielername()
             self.ui.show_coins(self.coins)
@@ -1021,7 +999,9 @@ def Play():
             self.ui.timer(self.time_left_string)
             self.calculating_highscore()
             self.check_game_state()
-
+            self.x_richtung_collision()
+            self.y_richtung_collsion()
+            self.bewegung_x()
 
     # interface im level
     class GUI:
@@ -1144,8 +1124,6 @@ def Play():
     # bestimmen des levels durch das ausgewählte feld im hauptmenu
     # danach auswählen der gebrauchten csv-datein
 
-    ###volume_value =
-
     # level 1
     if clicked_level == "World 1 - 1":
         level_map = {"untergrund": "assets/level_data/Level_1/level_1_overworld_erde.csv",
@@ -1221,6 +1199,7 @@ def Play():
                      "busch_2": "assets/level_data/Level_6/level_6_jungle_busch_2.csv",
                      "ranken": "assets/level_data/Level_6/level_6_jungle_ranken.csv"
                      }
+
     # level 7
     elif clicked_level == "World 1 - 7":
         level_map = {"untergrund": "assets/level_data/Level_7/level_7_erde_erde.csv",
@@ -1232,6 +1211,8 @@ def Play():
                      "busch": "assets/level_data/Level_7/level_7_erde_busch.csv",
                      "pilze": "assets/level_data/Level_7/level_7_erde_pilze.csv",
                      }
+
+    # level 8
     elif clicked_level == "World 1 - 8":
         level_map = {"untergrund": "assets/level_data/Level_8/level_8_schnee_schnee.csv",
                      "baum": "assets/level_data/Level_8/level_8_schnee_bäume.csv",
@@ -1242,13 +1223,14 @@ def Play():
                      "blumen": "assets/level_data/Level_8/level_8_schnee_blumen.csv",
                      "geschenk": "assets/level_data/Level_8/level_8_schnee_geschenk.csv"
                      }
+
     # pygame initialisieren
     py.init()
 
     # fenster attribute
-    fenster_width = 960
-    fenster_height = 720
-    pyfenster = py.display.set_mode((fenster_width, fenster_height))
+    fenster_width = 1920#960
+    fenster_height = 1080#720
+    pyfenster = py.display.set_mode((fenster_width, fenster_height), py.FULLSCREEN)
     py.display.set_caption("Marius Brothers™")
     clock = py.time.Clock()
     fps = 60
@@ -1258,7 +1240,7 @@ def Play():
     game_state = True
     # fenster loop
     while game_state:
-        clock.tick(fps)  # "aktualisierungsrate des fensters
+        clock.tick(fps)  # aktualisierungsrate des fensters
         for event in py.event.get():
             if event.type == py.QUIT:
                 game_state = False
@@ -1274,7 +1256,8 @@ def loop(x):
 
 # tkinter fenster attribute
 fenster = tk.Tk(className="Marius Brothers™")
-fenster.geometry("960x720")
+#fenster.geometry("960x720")
+fenster.attributes("-fullscreen", True)
 fenster.resizable(width=False, height=False)
 
 # verschiedene knopf schriftarten für die optik
